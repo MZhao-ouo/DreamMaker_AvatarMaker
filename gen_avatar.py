@@ -35,6 +35,16 @@ def gen_avatar(image_path):
 
     return result
 
+def get_qq_avatar(qq_number):
+    # 从url获取图片,返回一个pil图片
+    import requests
+    import io
+    url = f"https://q.qlogo.cn/headimg_dl?dst_uin={qq_number}&spec=640&img_type=jpg"
+    r = requests.get(url)
+    if r.status_code != 200:
+        return gr.Image.update(value=None)
+    qq_avatar = Image.open(io.BytesIO(r.content))
+    return qq_avatar
 
 
 with open("assets/style.css", "r", encoding="utf-8") as f:
@@ -46,8 +56,11 @@ with gr.Blocks(css=customCSS) as demo:
     with gr.Row():
         input_image = gr.Image(type="filepath", label="上传你的头像", allow_multiple_files=False)
         output_image = gr.Image(interactive=False, label="生成的头像")
+    qq_number = gr.Textbox(label="自动获取QQ头像", lines=1, placeholder="或者你也可以输入QQ号，一键生成")
+    submit = gr.Button(label="自动获取qq头像")
 
     input_image.change(gen_avatar, [input_image], [output_image])
+    submit.click(get_qq_avatar, [qq_number], [input_image])
 
 if __name__ == "__main__":
     demo.queue(concurrency_count=99).launch(
