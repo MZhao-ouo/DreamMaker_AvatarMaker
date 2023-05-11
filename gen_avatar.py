@@ -54,6 +54,14 @@ def get_qq_avatar(qq_number):
     qq_avatar = Image.open(io.BytesIO(r.content))
     return qq_avatar
 
+def show_recent():
+    imgs = []
+    # 展示最近生成的头像
+    imgs_path = os.listdir("./result")
+    imgs_path.sort(reverse=True)
+    imgs_path = imgs_path[:8]
+    imgs_path = [f"./result/{img}" for img in imgs_path]
+    return imgs_path
 
 with open("assets/style.css", "r", encoding="utf-8") as f:
     customCSS = f.read()
@@ -62,11 +70,13 @@ with gr.Blocks(css=customCSS) as demo:
     title = gr.HTML("<h1 style='text-align: center'>2023时光之书“造梦玩家”头像生成</h1><br>")
     
     with gr.Row():
-        input_image = gr.Image(type="filepath", label="上传你的头像", allow_multiple_files=False)
+        input_image = gr.Image(type="filepath", label="上传你的头像")
         output_image = gr.Image(interactive=False, label="生成的头像")
     qq_number = gr.Textbox(label="自动获取QQ头像", lines=1, placeholder="或者你也可以输入QQ号，一键生成")
     submit = gr.Button(label="自动获取qq头像")
+    avatar_gallary = gr.Gallery(label="最近加入的造梦玩家").style(columns=8, rows=1, object_fit="contain", height="auto")
 
+    demo.load(show_recent, [], [avatar_gallary])
     input_image.change(gen_avatar, [input_image], [output_image])
     submit.click(get_qq_avatar, [qq_number], [input_image])
 
