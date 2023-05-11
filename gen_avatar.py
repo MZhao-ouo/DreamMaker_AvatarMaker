@@ -1,4 +1,5 @@
 import gradio as gr
+import time, io, requests, os
 from PIL import Image, ImageDraw
 
 base_img = Image.open("./imgs/base.png")
@@ -33,12 +34,18 @@ def gen_avatar(image_path):
     result = Image.alpha_composite(result, mid_img)
     result = Image.alpha_composite(result, top_img)
 
+    # 保存图片到result文件夹，文件名为当前时间戳
+    timestamp = int(time.time())
+    save_path = f"./result/{timestamp}.png"
+    try:
+        result.save(save_path)
+    except:
+        print("保存图片失败")
+     
     return result
 
 def get_qq_avatar(qq_number):
     # 从url获取图片,返回一个pil图片
-    import requests
-    import io
     url = f"https://q.qlogo.cn/headimg_dl?dst_uin={qq_number}&spec=640&img_type=jpg"
     r = requests.get(url)
     if r.status_code != 200:

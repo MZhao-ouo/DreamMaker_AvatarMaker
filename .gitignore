@@ -144,3 +144,5 @@ auth.json
 lora/
 .idea
 templates/*
+
+result
