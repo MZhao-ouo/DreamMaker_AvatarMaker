@@ -39,6 +39,7 @@ def gen_avatar(image_path):
     save_path = f"./result/{timestamp}.png"
     try:
         result.save(save_path)
+        print("生成成功")
     except:
         print("保存图片失败")
      
