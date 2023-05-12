@@ -73,7 +73,7 @@ with gr.Blocks(css=customCSS) as demo:
         input_image = gr.Image(type="filepath", label="上传你的头像")
         output_image = gr.Image(interactive=False, label="生成的头像")
     qq_number = gr.Textbox(label="自动获取QQ头像", lines=1, placeholder="或者你也可以输入QQ号，一键生成")
-    submit = gr.Button(label="自动获取qq头像")
+    submit = gr.Button(value="自动获取qq头像")
     avatar_gallary = gr.Gallery(label="最近加入的造梦玩家").style(columns=8, rows=1, object_fit="contain", height="auto")
 
     demo.load(show_recent, [], [avatar_gallary])
