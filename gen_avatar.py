@@ -59,7 +59,7 @@ def show_recent():
     # 展示最近生成的头像
     imgs_path = os.listdir("./result")
     imgs_path.sort(reverse=True)
-    imgs_path = imgs_path[:8]
+    imgs_path = imgs_path[:16]
     imgs_path = [f"./result/{img}" for img in imgs_path]
     return imgs_path
 
